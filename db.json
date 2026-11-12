@@ -1,1 +1,90 @@
-{"cases":[],"evidence":[],"suspects":[],"scores":[]}
+
+{
+  "cases": [
+    {
+      "id": "1",
+      "title": "Misterul conacului Blackwood",
+      "description": "Un om de afaceri a fost găsit mort în biroul său. Poliția suspectează trei persoane.",
+      "location": "Conacul Blackwood",
+      "difficulty": "Dificil",
+      "status": "Disponibil",
+      "victim": "Richard Blackwood"
+    },
+    {
+      "id": "2",
+      "title": "Ultimul tren",
+      "description": "Un pasager a dispărut în timpul unei călătorii nocturne cu trenul.",
+      "location": "Gara Centrală",
+      "difficulty": "Mediu",
+      "status": "Disponibil",
+      "victim": "Thomas Miller"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "1",
+      "caseId": "1",
+      "name": "Pahar spart",
+      "description": "Un pahar de cristal găsit lângă birou.",
+      "type": "Obiect"
+    },
+    {
+      "id": "2",
+      "caseId": "1",
+      "name": "Amprentă",
+      "description": "O amprentă necunoscută descoperită pe clanța ușii.",
+      "type": "Fizică"
+    },
+    {
+      "id": "3",
+      "caseId": "1",
+      "name": "Scrisoare misterioasă",
+      "description": "O scrisoare care conține o amenințare adresată victimei.",
+      "type": "Document"
+    }
+  ],
+  "suspects": [
+    {
+      "id": "1",
+      "caseId": "1",
+      "name": "Edward Blackwood",
+      "description": "Fratele victimei. Avea conflicte financiare cu aceasta.",
+      "alibi": "Susține că se afla în grădină."
+    },
+    {
+      "id": "2",
+      "caseId": "1",
+      "name": "Sarah Collins",
+      "description": "Secretara victimei. Cunoștea programul acesteia.",
+      "alibi": "Susține că era în bucătărie."
+    },
+    {
+      "id": "3",
+      "caseId": "1",
+      "name": "James Wilson",
+      "description": "Majordomul conacului. Avea acces în toate camerele.",
+      "alibi": "Susține că era în camera personală."
+    }
+  ],
+  "timeline": [
+    {
+      "id": "1",
+      "caseId": "1",
+      "time": "19:00",
+      "event": "Victima ajunge la conac."
+    },
+    {
+      "id": "2",
+      "caseId": "1",
+      "time": "20:15",
+      "event": "Are loc o ceartă în birou."
+    },
+    {
+      "id": "3",
+      "caseId": "1",
+      "time": "21:00",
+      "event": "Victima este descoperită."
+    }
+  ],
+  "scores": []
+}
