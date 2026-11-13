@@ -1,6 +1,7 @@
 
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
 
 function Pagina({ titlu }) {
     return (
@@ -18,10 +19,7 @@ function App() {
 
             <main>
                 <Routes>
-                    <Route
-                        path="/"
-                        element={<Pagina titlu="Bine ai venit la CrimeLab" />}
-                    />
+                    <Route path="/" element={<Home />} />
 
                     <Route
                         path="/cazuri"
