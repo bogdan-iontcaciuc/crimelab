@@ -1,7 +1,6 @@
-
-function SuspectCard({ suspect }) {
+function SuspectCard({ suspect, isInterrogated = false, onInterrogate }) {
   return (
-    <div className="suspect-card">
+    <div className={isInterrogated ? "suspect-card interrogated" : "suspect-card"}>
       <div className="suspect-icon">👤</div>
 
       <div className="suspect-content">
@@ -15,6 +14,17 @@ function SuspectCard({ suspect }) {
           <strong>Alibi:</strong>
           <p>{suspect.alibi}</p>
         </div>
+
+        {isInterrogated ? (
+          <div className="suspect-statement">
+            <strong>Declarația la interogare:</strong>
+            <p>{suspect.statement || "Suspectul a refuzat să declare ceva."}</p>
+          </div>
+        ) : (
+          <button className="interrogate-btn" onClick={onInterrogate}>
+            Interoghează suspectul
+          </button>
+        )}
       </div>
     </div>
   );
