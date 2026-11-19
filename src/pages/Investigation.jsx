@@ -5,7 +5,7 @@ import SuspectCard from "../components/SuspectCard";
 import Timeline from "../components/Timeline";
 import "../styles/investigation.css";
 
-const API_URL = "http://localhost:3001/cases";
+const API_URL = "http://localhost:3001";
 
 function Investigation() {
   const { id } = useParams();
@@ -15,6 +15,7 @@ function Investigation() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("evidence");
   const [examinedEvidence, setExaminedEvidence] = useState([]);
+  const [interrogatedSuspects, setInterrogatedSuspects] = useState([]);
 
   const handleExamine = (evidenceId) => {
     setExaminedEvidence((prev) =>
@@ -22,18 +23,36 @@ function Investigation() {
     );
   };
 
+  const handleInterrogate = (suspectId) => {
+    setInterrogatedSuspects((prev) =>
+      prev.includes(suspectId) ? prev : [...prev, suspectId]
+    );
+  };
+
   useEffect(() => {
     setExaminedEvidence([]);
+    setInterrogatedSuspects([]);
+    setActiveTab("evidence");
     setLoading(true);
     setError(null);
 
-    fetch(`${API_URL}/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Cazul nu a fost găsit.");
-        return res.json();
-      })
-      .then((data) => {
-        setCaseData(data);
+    Promise.all([
+      fetch(`${API_URL}/cases/${id}`),
+      fetch(`${API_URL}/evidence?caseId=${id}`),
+      fetch(`${API_URL}/suspects?caseId=${id}`),
+      fetch(`${API_URL}/timeline?caseId=${id}`),
+    ])
+      .then(async ([caseRes, evRes, suRes, tlRes]) => {
+        if (!caseRes.ok) throw new Error("Cazul nu a fost găsit.");
+
+        const [info, evidence, suspects, timeline] = await Promise.all([
+          caseRes.json(),
+          evRes.json(),
+          suRes.json(),
+          tlRes.json(),
+        ]);
+
+        setCaseData({ ...info, evidence, suspects, timeline });
         setLoading(false);
       })
       .catch((err) => {
@@ -56,14 +75,19 @@ function Investigation() {
 
   return (
     <div className="investigation-page">
-      <Link to={`/cases/${id}`} className="back-link">
+      <Link to={`/cazuri/${id}`} className="back-link">
         ← Înapoi la detaliile cazului
       </Link>
 
       <h1>{caseData.title}</h1>
 
       <div className="investigation-progress">
-        Probe examinate: {examinedEvidence.length}/{evidence.length}
+        <span>
+          Probe examinate: {examinedEvidence.length}/{evidence.length}
+        </span>
+        <span>
+          Suspecți interogați: {interrogatedSuspects.length}/{suspects.length}
+        </span>
       </div>
 
       <div className="investigation-tabs">
@@ -106,7 +130,12 @@ function Investigation() {
         {activeTab === "suspects" && (
           <div className="cards-grid">
             {suspects.map((person) => (
-              <SuspectCard key={person.id} suspect={person} />
+              <SuspectCard
+                key={person.id}
+                suspect={person}
+                isInterrogated={interrogatedSuspects.includes(person.id)}
+                onInterrogate={() => handleInterrogate(person.id)}
+              />
             ))}
           </div>
         )}
