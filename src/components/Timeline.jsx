@@ -8,9 +8,14 @@ function Timeline({ events }) {
     );
   }
 
-  const sortedEvents = [...events].sort((a, b) =>
-    a.time.localeCompare(b.time)
-  );
+  const toMinutes = (time) => {
+  const [h, m] = time.split(":").map(Number);
+  return (h < 6 ? h + 24 : h) * 60 + m; // orele 00:00-05:59 sunt după miezul nopții
+};
+
+const sortedEvents = [...events].sort(
+  (a, b) => toMinutes(a.time) - toMinutes(b.time)
+);
 
   return (
     <div className="timeline">
