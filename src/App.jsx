@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Investigation from "./pages/Investigation";
 import AdminCases from "./pages/AdminCases";
+import Cases from "./pages/Cases";
 
 function Pagina({ titlu }) {
     return (
@@ -22,10 +23,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
 
-                    <Route
-                        path="/cazuri"
-                        element={<Pagina titlu="Cazuri disponibile" />}
-                    />
+                    <Route path="/cazuri" element={<Cases />} />
 
                     <Route path="/investigation/:id" element={<Investigation />} />
 
