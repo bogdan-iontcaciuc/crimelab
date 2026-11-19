@@ -14,8 +14,16 @@ function Investigation() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("evidence");
+  const [examinedEvidence, setExaminedEvidence] = useState([]);
+
+  const handleExamine = (evidenceId) => {
+    setExaminedEvidence((prev) =>
+      prev.includes(evidenceId) ? prev : [...prev, evidenceId]
+    );
+  };
 
   useEffect(() => {
+    setExaminedEvidence([]);
     setLoading(true);
     setError(null);
 
@@ -54,6 +62,10 @@ function Investigation() {
 
       <h1>{caseData.title}</h1>
 
+      <div className="investigation-progress">
+        Probe examinate: {examinedEvidence.length}/{evidence.length}
+      </div>
+
       <div className="investigation-tabs">
         <button
           className={activeTab === "evidence" ? "tab active" : "tab"}
@@ -81,7 +93,12 @@ function Investigation() {
         {activeTab === "evidence" && (
           <div className="cards-grid">
             {evidence.map((item) => (
-              <EvidenceCard key={item.id} evidence={item} />
+              <EvidenceCard
+                key={item.id}
+                evidence={item}
+                isExamined={examinedEvidence.includes(item.id)}
+                onExamine={() => handleExamine(item.id)}
+              />
             ))}
           </div>
         )}
