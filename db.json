@@ -1,3 +1,6 @@
+Am actualizat întregul `db.json` adăugând câmpul `statement` pentru toți suspecții din cele 3 cazuri, păstrând restul structurii (`cases`, `evidence`, `suspects`, `timeline`, `scores`) și indiciile (`clue`) deja definite.
+
+```json
 {
   "cases": [
     {
@@ -116,63 +119,72 @@
       "caseId": "1",
       "name": "Edward Blackwood",
       "description": "Fratele victimei. Avea conflicte financiare cu aceasta.",
-      "alibi": "Susține că se afla în grădină."
+      "alibi": "Susține că se afla în grădină.",
+      "statement": "Recunoaște că a avut o dispută legată de moștenire, dar susține că a ieșit în grădină să ia aer și nu a mai atins clanța biroului."
     },
     {
       "id": "2",
       "caseId": "1",
       "name": "Sarah Collins",
       "description": "Secretara victimei. Cunoștea programul acesteia.",
-      "alibi": "Susține că era în bucătărie."
+      "alibi": "Susține că era în bucătărie.",
+      "statement": "Afirmă că a pregătit un ceai în bucătărie după ora 20:00 și jură că nu a intrat deloc în biroul lui Richard în acea seară."
     },
     {
       "id": "3",
       "caseId": "1",
       "name": "James Wilson",
       "description": "Majordomul conacului. Avea acces în toate camerele.",
-      "alibi": "Susține că era în camera personală."
+      "alibi": "Susține că era în camera personală.",
+      "statement": "Declară că a fost mereu loial familiei și susține că nu a avut niciodată vreun conflict ascuns sau motiv să îl șantajeze pe stăpân."
     },
     {
       "id": "4",
       "caseId": "2",
       "name": "Elena Vance",
       "description": "Pasageră din compartimentul alăturat. Părea agitată la îmbarcare.",
-      "alibi": "Susține că nu a părăsit compartimentul toată noaptea."
+      "alibi": "Susține că nu a părăsit compartimentul toată noaptea.",
+      "statement": "Susține că a citit în compartiment toată noaptea și că nu îl cunoaște pe Thomas Miller, negând orice legătură cu biletul lui."
     },
     {
       "id": "5",
       "caseId": "2",
       "name": "Victor Marin",
       "description": "Controlorul trenului de noapte.",
-      "alibi": "Susține că a dormit între orele 01:00 și 03:00."
+      "alibi": "Susține că a dormit între orele 01:00 și 03:00.",
+      "statement": "Spune că era epuizat după două ture consecutive, că a adormit în cabina de serviciu la 01:00 și nu a auzit niciun zgomot pe culoar."
     },
     {
       "id": "6",
       "caseId": "2",
       "name": "Arthur Doyle",
       "description": "Partener de afaceri al victimei, aflat în același vagon.",
-      "alibi": "Susține că a stat în vagonul-restaurant până la închidere."
+      "alibi": "Susține că a stat în vagonul-restaurant până la închidere.",
+      "statement": "Recunoaște că avea datorii față de Thomas, dar afirmă că a băut o cafea în vagonul-restaurant și nu a știut de niciun plan de plecare."
     },
     {
       "id": "7",
       "caseId": "3",
       "name": "Arthur Pendelton",
       "description": "Curatorul galeriei. Cunoștea toate codurile de securitate.",
-      "alibi": "Susține că a plecat spre casă la ora 21:30."
+      "alibi": "Susține că a plecat spre casă la ora 21:30.",
+      "statement": "Jură că a părăsit clădirea la 21:30 exact, că nu a mai revenit în galerie și că nimeni altcineva nu ar fi trebuit să îi folosească codul."
     },
     {
       "id": "8",
       "caseId": "3",
       "name": "Luca Moretti",
       "description": "Ospătar la recepția privată.",
-      "alibi": "Susține că nu a intrat deloc în sala principală."
+      "alibi": "Susține că nu a intrat deloc în sala principală.",
+      "statement": "Afirmă că a servit băuturi doar în holul de la intrare și că nu a trecut niciodată pragul sălii în care era expus tabloul."
     },
     {
       "id": "9",
       "caseId": "3",
       "name": "George Vasile",
       "description": "Agentul de pază de serviciu în noaptea jafului.",
-      "alibi": "Susține că patrula la etajul superior."
+      "alibi": "Susține că patrula la etajul superior.",
+      "statement": "Spune că era la etaj în momentul jafului și că este strâmtorat de bani, motiv pentru care a evitat să discute despre situația lui financiară."
     }
   ],
   "timeline": [
@@ -233,3 +245,5 @@
   ],
   "scores": []
 }
+
+```
