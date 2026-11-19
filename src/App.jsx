@@ -1,7 +1,8 @@
-
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
+import Investigation from "./pages/Investigation";
+import AdminCases from "./pages/AdminCases";
 
 function Pagina({ titlu }) {
     return (
@@ -25,6 +26,10 @@ function App() {
                         path="/cazuri"
                         element={<Pagina titlu="Cazuri disponibile" />}
                     />
+
+                    <Route path="/investigation/:id" element={<Investigation />} />
+
+                    <Route path="/admin" element={<AdminCases />} />
 
                     <Route
                         path="/clasament"
