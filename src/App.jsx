@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Investigation from "./pages/Investigation";
 import AdminCases from "./pages/AdminCases";
 import Cases from "./pages/Cases";
+import Leaderboard from "./pages/Leaderboard";
 
 function Pagina({ titlu }) {
     return (
@@ -29,10 +30,7 @@ function App() {
 
                     <Route path="/admin" element={<AdminCases />} />
 
-                    <Route
-                        path="/clasament"
-                        element={<Pagina titlu="Clasamentul detectivilor" />}
-                    />
+                    <Route path="/clasament" element={<Leaderboard />} />
 
                     <Route
                         path="/despre"
