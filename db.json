@@ -1,6 +1,3 @@
-Am actualizat întregul `db.json` adăugând câmpul `statement` pentru toți suspecții din cele 3 cazuri, păstrând restul structurii (`cases`, `evidence`, `suspects`, `timeline`, `scores`) și indiciile (`clue`) deja definite.
-
-```json
 {
   "cases": [
     {
