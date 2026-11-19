@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
-const API_URL = "http://localhost:3001/cases";
+const BASE_URL = "http://localhost:3001";
+const API_URL = `${BASE_URL}/cases`;
 
 const EMPTY_FORM = {
   title: "",
   difficulty: "Ușor",
   location: "",
+  victim: "",
   description: "",
 };
 
@@ -27,7 +29,6 @@ function AdminCases() {
       })
       .then((data) => {
         setCases(data);
-        setError(null);
         setLoading(false);
       })
       .catch((err) => {
@@ -62,7 +63,7 @@ function AdminCases() {
       let res;
 
       if (editingId) {
-        // PATCH păstrează probele, suspecții și cronologia existente
+        // PATCH modifică doar câmpurile din formular
         res = await fetch(`${API_URL}/${editingId}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -72,12 +73,7 @@ function AdminCases() {
         res = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...form,
-            evidence: [],
-            suspects: [],
-            timeline: [],
-          }),
+          body: JSON.stringify({ ...form, status: "Disponibil" }),
         });
       }
 
@@ -94,23 +90,43 @@ function AdminCases() {
   const handleEdit = (item) => {
     setEditingId(item.id);
     setForm({
-      title: item.title,
-      difficulty: item.difficulty,
+      title: item.title || "",
+      difficulty: item.difficulty || "Ușor",
       location: item.location || "",
-      description: item.description,
+      victim: item.victim || "",
+      description: item.description || "",
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // DELETE
+  // DELETE (cu ștergere în cascadă a datelor legate de caz)
   const handleDelete = async (item) => {
-    if (!window.confirm(`Sigur ștergi cazul "${item.title}"?`)) return;
+    if (
+      !window.confirm(
+        `Sigur ștergi cazul "${item.title}"? Se vor șterge și probele, suspecții și cronologia lui.`
+      )
+    ) {
+      return;
+    }
 
     try {
+      // Mai întâi datele legate, apoi cazul
+      for (const type of ["evidence", "suspects", "timeline"]) {
+        const r = await fetch(`${BASE_URL}/${type}?caseId=${item.id}`);
+        const rows = await r.json();
+
+        await Promise.all(
+          rows.map((row) =>
+            fetch(`${BASE_URL}/${type}/${row.id}`, { method: "DELETE" })
+          )
+        );
+      }
+
       const res = await fetch(`${API_URL}/${item.id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Ștergerea a eșuat.");
 
       if (editingId === item.id) resetForm();
+      setError(null);
       loadCases();
     } catch (err) {
       setError(err.message);
@@ -145,7 +161,7 @@ function AdminCases() {
           >
             <option value="Ușor">Ușor</option>
             <option value="Mediu">Mediu</option>
-            <option value="Greu">Greu</option>
+            <option value="Dificil">Dificil</option>
           </select>
         </label>
 
@@ -155,6 +171,16 @@ function AdminCases() {
             type="text"
             name="location"
             value={form.location}
+            onChange={handleChange}
+          />
+        </label>
+
+        <label>
+          Victima / obiectul furat
+          <input
+            type="text"
+            name="victim"
+            value={form.victim}
             onChange={handleChange}
           />
         </label>
@@ -193,8 +219,8 @@ function AdminCases() {
             <tr>
               <th>Titlu</th>
               <th>Dificultate</th>
-              <th>Probe</th>
-              <th>Suspecți</th>
+              <th>Locație</th>
+              <th>Status</th>
               <th>Acțiuni</th>
             </tr>
           </thead>
@@ -203,8 +229,8 @@ function AdminCases() {
               <tr key={item.id}>
                 <td>{item.title}</td>
                 <td>{item.difficulty}</td>
-                <td>{item.evidence?.length || 0}</td>
-                <td>{item.suspects?.length || 0}</td>
+                <td>{item.location}</td>
+                <td>{item.status}</td>
                 <td>
                   <button onClick={() => handleEdit(item)}>Editează</button>
                   <button onClick={() => handleDelete(item)}>Șterge</button>
