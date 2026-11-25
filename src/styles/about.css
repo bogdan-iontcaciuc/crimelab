@@ -1,0 +1,264 @@
+
+.about-page {
+	min-height: 100vh;
+	background: #0d0f11;
+	color: #f5f5f5;
+	padding: 60px 24px 30px;
+}
+
+.about-container {
+	max-width: 1150px;
+	margin: 0 auto;
+}
+
+.about-hero {
+	text-align: center;
+	padding: 45px 0 70px;
+}
+
+.about-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+	color: #ef4444;
+	background: rgba(239, 68, 68, 0.08);
+	border: 1px solid rgba(239, 68, 68, 0.25);
+	border-radius: 30px;
+	padding: 9px 17px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	margin-bottom: 24px;
+}
+
+.about-hero h1 {
+	font-size: clamp(36px, 5vw, 58px);
+	line-height: 1.2;
+	margin-bottom: 22px;
+}
+
+	.about-hero h1 span {
+		color: #ef4444;
+	}
+
+.about-hero p {
+	max-width: 680px;
+	margin: 0 auto 30px;
+	color: #a1a1aa;
+	font-size: 17px;
+	line-height: 1.8;
+}
+
+.about-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	background: #b52b38;
+	color: #fff;
+	text-decoration: none;
+	padding: 15px 25px;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 700;
+	transition: background 0.2s, transform 0.2s;
+}
+
+	.about-button:hover {
+		background: #dc3545;
+		transform: translateY(-2px);
+	}
+
+.about-mission {
+	display: flex;
+	align-items: center;
+	gap: 28px;
+	padding: 35px;
+	background: #151719;
+	border: 1px solid #292c31;
+	border-left: 4px solid #ef4444;
+	border-radius: 14px;
+	margin-bottom: 75px;
+}
+
+.about-mission-icon {
+	flex-shrink: 0;
+	display: grid;
+	place-items: center;
+	width: 80px;
+	height: 80px;
+	color: #ef4444;
+	background: rgba(239, 68, 68, 0.1);
+	border-radius: 16px;
+}
+
+.about-mission h2 {
+	font-size: 25px;
+	margin-bottom: 12px;
+}
+
+.about-mission p {
+	color: #a1a1aa;
+	line-height: 1.8;
+}
+
+.about-section {
+	margin-bottom: 70px;
+}
+
+	.about-section > h2 {
+		font-size: 30px;
+		margin-bottom: 12px;
+	}
+
+.about-subtitle {
+	color: #a1a1aa;
+	margin-bottom: 28px;
+	line-height: 1.6;
+}
+
+.about-steps,
+.about-features,
+.about-team {
+	display: grid;
+	gap: 20px;
+}
+
+.about-steps {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.about-features,
+.about-team {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.about-card {
+	position: relative;
+	padding: 28px;
+	background: #151719;
+	border: 1px solid #292c31;
+	border-radius: 14px;
+	transition: border-color 0.2s, transform 0.2s;
+}
+
+	.about-card:hover {
+		border-color: #b52b38;
+		transform: translateY(-4px);
+	}
+
+.about-card-icon {
+	display: grid;
+	place-items: center;
+	width: 55px;
+	height: 55px;
+	color: #ef4444;
+	background: rgba(239, 68, 68, 0.1);
+	border-radius: 12px;
+	margin-bottom: 22px;
+}
+
+.about-step-number {
+	position: absolute;
+	top: 24px;
+	right: 24px;
+	color: #52525b;
+	font-size: 30px;
+	font-weight: 800;
+}
+
+.about-card h3 {
+	font-size: 19px;
+	margin-bottom: 12px;
+}
+
+.about-card p {
+	color: #a1a1aa;
+	font-size: 15px;
+	line-height: 1.75;
+}
+
+.about-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 20px;
+}
+
+	.about-tags span {
+		background: #222428;
+		border: 1px solid #33363c;
+		color: #d4d4d8;
+		padding: 6px 12px;
+		border-radius: 6px;
+		font-size: 12px;
+	}
+
+.about-cta {
+	text-align: center;
+	background: linear-gradient(135deg, #251619, #151719);
+	border: 1px solid rgba(239, 68, 68, 0.3);
+	border-radius: 18px;
+	padding: 55px 25px;
+	margin-bottom: 40px;
+}
+
+	.about-cta > svg {
+		color: #ef4444;
+		margin-bottom: 20px;
+	}
+
+	.about-cta h2 {
+		font-size: clamp(24px, 4vw, 34px);
+		margin-bottom: 15px;
+	}
+
+	.about-cta p {
+		color: #a1a1aa;
+		margin-bottom: 25px;
+	}
+
+.about-footer {
+	text-align: center;
+	font-size: 13px;
+	color: #a1a1aa;
+	padding: 20px 0;
+}
+
+@media (max-width: 800px) {
+	.about-steps {
+		grid-template-columns: 1fr;
+	}
+
+	.about-mission {
+		align-items: flex-start;
+	}
+}
+
+@media (max-width: 550px) {
+	.about-page {
+		padding: 30px 16px;
+	}
+
+	.about-hero {
+		padding: 25px 0 45px;
+	}
+
+	.about-mission {
+		flex-direction: column;
+		padding: 24px;
+	}
+
+	.about-features,
+	.about-team {
+		grid-template-columns: 1fr;
+	}
+
+	.about-section {
+		margin-bottom: 45px;
+	}
+
+	.about-card {
+		padding: 24px;
+	}
+}

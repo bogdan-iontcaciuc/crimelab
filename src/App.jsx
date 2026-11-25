@@ -5,6 +5,7 @@ import Investigation from "./pages/Investigation";
 import AdminCases from "./pages/AdminCases";
 import Cases from "./pages/Cases";
 import Leaderboard from "./pages/Leaderboard";
+import About from "./pages/About";
 
 function Pagina({ titlu }) {
     return (
@@ -32,10 +33,7 @@ function App() {
 
                     <Route path="/clasament" element={<Leaderboard />} />
 
-                    <Route
-                        path="/despre"
-                        element={<Pagina titlu="Despre CrimeLab" />}
-                    />
+                    <Route path="/despre" element={<About />} />
 
                     <Route
                         path="*"
