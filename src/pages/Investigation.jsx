@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import EvidenceCard from "../components/EvidenceCard";
 import SuspectCard from "../components/SuspectCard";
 import Timeline from "../components/Timeline";
@@ -8,7 +8,8 @@ import "../styles/investigation.css";
 const API_URL = "http://localhost:3001";
 
 function Investigation() {
-  const { id } = useParams();
+    const { id } = useParams();
+    const navigate = useNavigate();
 
   const [caseData, setCaseData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,11 +24,9 @@ function Investigation() {
     );
   };
 
-  const handleInterrogate = (suspectId) => {
-    setInterrogatedSuspects((prev) =>
-      prev.includes(suspectId) ? prev : [...prev, suspectId]
-    );
-  };
+    const handleInterrogate = (suspectId) => {
+        navigate(`/interrogation/${id}/${suspectId}`);
+    };
 
   useEffect(() => {
     setExaminedEvidence([]);
@@ -36,12 +35,12 @@ function Investigation() {
     setLoading(true);
     setError(null);
 
-    Promise.all([
-      fetch(`${API_URL}/cases/${id}`),
-      fetch(`${API_URL}/evidence?caseId=${id}`),
-      fetch(`${API_URL}/suspects?caseId=${id}`),
-      fetch(`${API_URL}/timeline?caseId=${id}`),
-    ])
+      Promise.all([
+          fetch(`${API_URL}/cases/${id}`),
+          fetch(`${API_URL}/evidence`),
+          fetch(`${API_URL}/suspects`),
+          fetch(`${API_URL}/timeline`),
+      ])
       .then(async ([caseRes, evRes, suRes, tlRes]) => {
         if (!caseRes.ok) throw new Error("Cazul nu a fost găsit.");
 
@@ -52,7 +51,18 @@ function Investigation() {
           tlRes.json(),
         ]);
 
-        setCaseData({ ...info, evidence, suspects, timeline });
+          setCaseData({
+              ...info,
+              evidence: evidence.filter(
+                  (item) => String(item.caseId) === String(id)
+              ),
+              suspects: suspects.filter(
+                  (item) => String(item.caseId) === String(id)
+              ),
+              timeline: timeline.filter(
+                  (item) => String(item.caseId) === String(id)
+              ),
+          });
         setLoading(false);
       })
       .catch((err) => {
@@ -75,9 +85,9 @@ function Investigation() {
 
   return (
     <div className="investigation-page">
-      <Link to={`/cazuri/${id}`} className="back-link">
-        ← Înapoi la detaliile cazului
-      </Link>
+          <Link to="/cazuri" className="back-link">
+              ← Înapoi la cazuri
+          </Link>
 
       <h1>{caseData.title}</h1>
 

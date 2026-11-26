@@ -6,6 +6,7 @@ import AdminCases from "./pages/AdminCases";
 import Cases from "./pages/Cases";
 import Leaderboard from "./pages/Leaderboard";
 import About from "./pages/About";
+import Interrogation from "./pages/Interrogation";
 
 function Pagina({ titlu }) {
     return (
@@ -28,6 +29,11 @@ function App() {
                     <Route path="/cazuri" element={<Cases />} />
 
                     <Route path="/investigation/:id" element={<Investigation />} />
+
+                    <Route
+                        path="/interrogation/:caseId/:suspectId"
+                        element={<Interrogation />}
+                    />
 
                     <Route path="/admin" element={<AdminCases />} />
 

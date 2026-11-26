@@ -1,0 +1,229 @@
+
+.interrogation-page {
+    min-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background: #09090b;
+    color: #f4f4f5;
+    font-family: inherit;
+}
+
+.interrogation-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    background: #101012;
+    border-bottom: 1px solid #29292d;
+}
+
+.interrogation-back {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a1a1aa;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+    .interrogation-back:hover {
+        color: #ef4444;
+    }
+
+.interrogation-recording {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ef4444;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.recording-dot {
+    width: 9px;
+    height: 9px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: interrogation-blink 1.5s infinite;
+}
+
+@keyframes interrogation-blink {
+    50% {
+        opacity: 0.25;
+    }
+}
+
+.interrogation-room {
+    position: relative;
+    flex: 1;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: radial-gradient( ellipse at 50% 15%, #44413a 0%, #222222 35%, #09090b 80% );
+}
+
+.interrogation-lamp {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 45px;
+    background: #18181b;
+    border-bottom: 5px solid #f5deb3;
+    border-radius: 10px 10px 40% 40%;
+    box-shadow: 0 15px 65px 12px #ffe4a333;
+}
+
+.interrogation-suspect {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 90px 20px 130px;
+}
+
+.interrogation-bubble {
+    position: relative;
+    width: max-content;
+    max-width: min(360px, 75vw);
+    padding: 18px 24px;
+    margin-bottom: 16px;
+    background: #e4e4e7;
+    color: #18181b;
+    border-radius: 22px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.6;
+    box-shadow: 0 5px 25px #0005;
+}
+
+    .interrogation-bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 14px solid #e4e4e7;
+    }
+
+.interrogation-avatar {
+    width: 170px;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #18181b;
+    border: 1px solid #52525b;
+    border-radius: 50%;
+    color: #71717a;
+    box-shadow: 0 0 40px #0008;
+}
+
+.interrogation-suspect h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #fafafa;
+}
+
+.interrogation-suspect-label {
+    color: #ef4444;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+}
+
+.interrogation-table {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient( 180deg, #39332e, #181513 );
+    border-top: 3px solid #51483f;
+    box-shadow: 0 -10px 40px #0006;
+}
+
+.interrogation-controls {
+    display: flex;
+    gap: 12px;
+    padding: 24px 32px;
+    background: #101012;
+    border-top: 1px solid #29292d;
+}
+
+    .interrogation-controls input {
+        flex: 1;
+        min-width: 0;
+        padding: 16px;
+        border: 1px solid #3f3f46;
+        border-radius: 8px;
+        background: #18181b;
+        color: #fafafa;
+        font: inherit;
+        outline: none;
+    }
+
+        .interrogation-controls input:focus {
+            border-color: #dc2626;
+        }
+
+    .interrogation-controls button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 24px;
+        border: none;
+        border-radius: 8px;
+        background: #b91c1c;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .interrogation-controls button:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+.interrogation-message {
+    padding: 60px 20px;
+    color: #a1a1aa;
+    text-align: center;
+}
+
+    .interrogation-message a {
+        color: #ef4444;
+    }
+
+@media (max-width: 600px) {
+    .interrogation-header {
+        padding: 16px;
+    }
+
+    .interrogation-controls {
+        padding: 16px;
+    }
+
+        .interrogation-controls button {
+            padding: 12px;
+        }
+
+    .interrogation-avatar {
+        width: 140px;
+        height: 140px;
+    }
+
+    .interrogation-room {
+        min-height: 460px;
+    }
+}
