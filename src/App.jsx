@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Investigation from "./pages/Investigation";
@@ -18,17 +19,29 @@ function Pagina({ titlu }) {
 }
 
 function App() {
+    const location = useLocation();
+
+    const isInterrogation =
+        location.pathname.startsWith("/interrogation/");
+
     return (
         <>
-            <Navbar />
+            {!isInterrogation && <Navbar />}
 
-            <main>
+            <main
+                className={
+                    isInterrogation ? "interrogation-main" : undefined
+                }
+            >
                 <Routes>
                     <Route path="/" element={<Home />} />
 
                     <Route path="/cazuri" element={<Cases />} />
 
-                    <Route path="/investigation/:id" element={<Investigation />} />
+                    <Route
+                        path="/investigation/:id"
+                        element={<Investigation />}
+                    />
 
                     <Route
                         path="/interrogation/:caseId/:suspectId"
