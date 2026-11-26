@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import EvidenceCard from "../components/EvidenceCard";
 import SuspectCard from "../components/SuspectCard";
 import Timeline from "../components/Timeline";
@@ -8,7 +8,8 @@ import "../styles/investigation.css";
 const API_URL = "http://localhost:3001";
 
 function Investigation() {
-  const { id } = useParams();
+    const { id } = useParams();
+    const navigate = useNavigate();
 
   const [caseData, setCaseData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,11 +24,9 @@ function Investigation() {
     );
   };
 
-  const handleInterrogate = (suspectId) => {
-    setInterrogatedSuspects((prev) =>
-      prev.includes(suspectId) ? prev : [...prev, suspectId]
-    );
-  };
+    const handleInterrogate = (suspectId) => {
+        navigate(`/interrogation/${id}/${suspectId}`);
+    };
 
   useEffect(() => {
     setExaminedEvidence([]);
@@ -86,9 +85,9 @@ function Investigation() {
 
   return (
     <div className="investigation-page">
-      <Link to={`/cazuri/${id}`} className="back-link">
-        ← Înapoi la detaliile cazului
-      </Link>
+          <Link to="/cazuri" className="back-link">
+              ← Înapoi la cazuri
+          </Link>
 
       <h1>{caseData.title}</h1>
 
