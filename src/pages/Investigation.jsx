@@ -5,7 +5,7 @@ import SuspectCard from "../components/SuspectCard";
 import Timeline from "../components/Timeline";
 import "../styles/investigation.css";
 
-const API_URL = "http://localhost:3001";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 function Investigation() {
     const { id } = useParams();
@@ -29,20 +29,24 @@ function Investigation() {
     };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+
     setExaminedEvidence([]);
     setInterrogatedSuspects([]);
     setActiveTab("evidence");
     setLoading(true);
     setError(null);
 
-      Promise.all([
-          fetch(`${API_URL}/cases/${id}`),
-          fetch(`${API_URL}/evidence`),
-          fetch(`${API_URL}/suspects`),
-          fetch(`${API_URL}/timeline`),
-      ])
+    Promise.all([
+      fetch(`${API_URL}/cases/${id}`, { signal }),
+      fetch(`${API_URL}/evidence?caseId=${id}`, { signal }),
+      fetch(`${API_URL}/suspects?caseId=${id}`, { signal }),
+      fetch(`${API_URL}/timeline?caseId=${id}`, { signal }),
+    ])
       .then(async ([caseRes, evRes, suRes, tlRes]) => {
         if (!caseRes.ok) throw new Error("Cazul nu a fost găsit.");
+        if (!evRes.ok || !suRes.ok || !tlRes.ok) throw new Error("Eroare la încărcarea datelor.");
 
         const [info, evidence, suspects, timeline] = await Promise.all([
           caseRes.json(),
@@ -51,24 +55,21 @@ function Investigation() {
           tlRes.json(),
         ]);
 
-          setCaseData({
-              ...info,
-              evidence: evidence.filter(
-                  (item) => String(item.caseId) === String(id)
-              ),
-              suspects: suspects.filter(
-                  (item) => String(item.caseId) === String(id)
-              ),
-              timeline: timeline.filter(
-                  (item) => String(item.caseId) === String(id)
-              ),
-          });
+        setCaseData({
+          ...info,
+          evidence: Array.isArray(evidence) ? evidence : [],
+          suspects: Array.isArray(suspects) ? suspects : [],
+          timeline: Array.isArray(timeline) ? timeline : [],
+        });
         setLoading(false);
       })
       .catch((err) => {
+        if (err.name === "AbortError") return;
         setError(err.message);
         setLoading(false);
       });
+
+    return () => controller.abort();
   }, [id]);
 
   if (loading) {
