@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import "../styles/interrogation.css";
 
-const API_URL = "http://localhost:3001";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 const SUSPECT_IMAGES = {
     "Edward Blackwood": "/images/interrogation/suspects/edward-blackwood.png",
     "Sarah Collins": "/images/interrogation/suspects/sarah-collins.png",
