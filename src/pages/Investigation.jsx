@@ -36,12 +36,12 @@ function Investigation() {
     setLoading(true);
     setError(null);
 
-    Promise.all([
-      fetch(`${API_URL}/cases/${id}`),
-      fetch(`${API_URL}/evidence?caseId=${id}`),
-      fetch(`${API_URL}/suspects?caseId=${id}`),
-      fetch(`${API_URL}/timeline?caseId=${id}`),
-    ])
+      Promise.all([
+          fetch(`${API_URL}/cases/${id}`),
+          fetch(`${API_URL}/evidence`),
+          fetch(`${API_URL}/suspects`),
+          fetch(`${API_URL}/timeline`),
+      ])
       .then(async ([caseRes, evRes, suRes, tlRes]) => {
         if (!caseRes.ok) throw new Error("Cazul nu a fost găsit.");
 
@@ -52,7 +52,18 @@ function Investigation() {
           tlRes.json(),
         ]);
 
-        setCaseData({ ...info, evidence, suspects, timeline });
+          setCaseData({
+              ...info,
+              evidence: evidence.filter(
+                  (item) => String(item.caseId) === String(id)
+              ),
+              suspects: suspects.filter(
+                  (item) => String(item.caseId) === String(id)
+              ),
+              timeline: timeline.filter(
+                  (item) => String(item.caseId) === String(id)
+              ),
+          });
         setLoading(false);
       })
       .catch((err) => {
