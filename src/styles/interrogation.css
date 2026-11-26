@@ -1,11 +1,22 @@
-
+.interrogation-main {
+    width: 100%;
+    max-width: none;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    background: #09090b;
+}
 .interrogation-page {
-    min-height: 85vh;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     background: #09090b;
     color: #f4f4f5;
     font-family: inherit;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .interrogation-header {
@@ -63,45 +74,60 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: radial-gradient( ellipse at 50% 15%, #44413a 0%, #222222 35%, #09090b 80% );
+    background-color: #09090b;
+    background-image: url("/images/interrogation/room.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.interrogation-lamp {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 120px;
-    height: 45px;
-    background: #18181b;
-    border-bottom: 5px solid #f5deb3;
-    border-radius: 10px 10px 40% 40%;
-    box-shadow: 0 15px 65px 12px #ffe4a333;
-}
+    .interrogation-room::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient( ellipse at center, transparent 40%, rgba(0, 0, 0, 0.55) 100% );
+        pointer-events: none;
+        z-index: 1;
+    }
 
 .interrogation-suspect {
-    position: relative;
+    position: absolute;
     z-index: 2;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    padding: 90px 20px 130px;
+    padding: 0;
+}
+
+.interrogation-character {
+    display: block;
+    width: clamp(240px, 30vw, 480px);
+    height: auto;
+    max-height: 45vh;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.5));
 }
 
 .interrogation-bubble {
     position: relative;
     width: max-content;
-    max-width: min(360px, 75vw);
-    padding: 18px 24px;
-    margin-bottom: 16px;
-    background: #e4e4e7;
+    max-width: min(380px, 75vw);
+    padding: 14px 22px;
+    margin-bottom: 4px;
+    background: rgba(240, 240, 240, 0.96);
     color: #18181b;
-    border-radius: 22px;
+    border-radius: 14px;
     text-align: center;
     font-size: 15px;
-    line-height: 1.6;
-    box-shadow: 0 5px 25px #0005;
+    line-height: 1.5;
+    box-shadow: 0 5px 25px #0006;
+    backdrop-filter: blur(8px);
 }
 
     .interrogation-bubble::after {
@@ -130,26 +156,27 @@
 
 .interrogation-suspect h2 {
     margin: 0;
-    font-size: 24px;
+    padding: 10px 24px;
+    background: rgba(10, 10, 10, 0.85);
+    border: 1px solid #ffffff20;
+    border-radius: 6px;
+    font-size: clamp(16px, 1.5vw, 24px);
     color: #fafafa;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
 }
 
 .interrogation-suspect-label {
-    color: #ef4444;
+    color: #ff4545;
+    background: rgba(10, 10, 10, 0.9);
+    padding: 6px 18px;
+    border-radius: 4px;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 4px;
-}
-
-.interrogation-table {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 110px;
-    background: linear-gradient( 180deg, #39332e, #181513 );
-    border-top: 3px solid #51483f;
-    box-shadow: 0 -10px 40px #0006;
+    margin-top: -8px;
+    text-shadow: 0 0 10px #ef444444;
 }
 
 .interrogation-controls {
@@ -225,5 +252,257 @@
 
     .interrogation-room {
         min-height: 460px;
+    }
+}
+.interrogation-character {
+    transform-origin: center bottom;
+    animation: suspect-breathing 4s ease-in-out infinite;
+}
+
+@keyframes suspect-breathing {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.008, 1.015);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .interrogation-character {
+        animation: none;
+    }
+}
+
+/* NIVEL DE COOPERARE */
+
+.interrogation-cooperation {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(720px, 65%);
+    z-index: 5;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid #ffffff15;
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+}
+
+.cooperation-title {
+    text-align: center;
+    color: #d4d4d8;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    margin-bottom: 6px;
+}
+
+.cooperation-labels {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+    .cooperation-labels span:nth-child(1) {
+        color: #ff4545;
+        text-align: left;
+    }
+
+    .cooperation-labels span:nth-child(2) {
+        color: #facc15;
+        text-align: center;
+    }
+
+    .cooperation-labels span:nth-child(3) {
+        color: #4ade80;
+        text-align: right;
+    }
+
+.cooperation-track {
+    position: relative;
+    height: 12px;
+    border-radius: 20px;
+    background: linear-gradient( 90deg, #dc2626 0%, #f97316 25%, #facc15 50%, #84cc16 75%, #22c55e 100% );
+    border: 1px solid #ffffff40;
+    box-shadow: 0 0 15px #0008;
+}
+
+.cooperation-indicator {
+    position: absolute;
+    top: -5px;
+    width: 5px;
+    height: 22px;
+    background: #ffffff;
+    border-radius: 3px;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px #ffffff80;
+    transition: left 0.7s ease;
+}
+
+@media (max-width: 600px) {
+    .interrogation-cooperation {
+        width: 94%;
+        padding: 12px;
+        top: 10px;
+    }
+
+    .cooperation-labels {
+        font-size: 10px;
+        letter-spacing: 0;
+    }
+
+    .cooperation-title {
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+}
+/* INTERFATA HUD */
+
+.interrogation-hud {
+    position: absolute;
+    top: 32%;
+    z-index: 4;
+    width: clamp(180px, 19vw, 280px);
+    padding: 20px;
+    box-sizing: border-box;
+    background: rgba(8, 8, 10, 0.85);
+    border: 1px solid #ffffff30;
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 30px #0005;
+}
+
+.hud-left {
+    left: 4%;
+}
+
+.hud-right {
+    right: 4%;
+}
+
+.hud-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #d4d4d8;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.heart-rate {
+    margin-top: 16px;
+    color: #4ade80;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+    .heart-rate span {
+        font-size: 16px;
+    }
+
+.heartbeat-monitor {
+    margin-top: 12px;
+    overflow: hidden;
+    background-color: #07130c;
+    background-image: linear-gradient(#22c55e12 1px, transparent 1px), linear-gradient(90deg, #22c55e12 1px, transparent 1px);
+    background-size: 15px 15px;
+    border-radius: 5px;
+}
+
+    .heartbeat-monitor svg {
+        display: block;
+        width: 100%;
+        height: 65px;
+    }
+
+.heartbeat-line {
+    fill: none;
+    stroke: #4ade80;
+    stroke-width: 2;
+    filter: drop-shadow(0 0 4px #22c55e);
+}
+
+.hud-divider {
+    height: 1px;
+    background: #ffffff25;
+    margin: 18px 0;
+}
+
+.stress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #d4d4d8;
+}
+
+    .stress-info strong {
+        color: #4ade80;
+        font-size: 18px;
+    }
+
+.stress-track {
+    height: 10px;
+    margin-top: 10px;
+    background: #27272a;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.stress-fill {
+    height: 100%;
+    background: #4ade80;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.interrogation-timer {
+    margin-top: 12px;
+    font-size: 42px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: #fafafa;
+}
+
+.attempts-value {
+    margin-top: 12px;
+    font-size: 32px;
+    font-weight: 700;
+    color: #fafafa;
+}
+
+    .attempts-value span {
+        font-size: 18px;
+        color: #71717a;
+    }
+
+@media (max-width: 900px) {
+    .interrogation-hud {
+        width: 150px;
+        padding: 12px;
+    }
+
+    .hud-left {
+        left: 2%;
+    }
+
+    .hud-right {
+        right: 2%;
+    }
+
+    .hud-title {
+        font-size: 10px;
+    }
+
+    .interrogation-timer {
+        font-size: 28px;
     }
 }
