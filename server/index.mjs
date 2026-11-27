@@ -1,4 +1,6 @@
 import express from "express";
+import { saveBestScore, getLeaderboard, updateDetectiveName } from "./leaderboard.mjs";
+import { calculateScore } from "./scoring.mjs";
 import cors from "cors";
 import dotenv from "dotenv";
 import Groq from "groq-sdk";
@@ -282,11 +284,46 @@ de nivelul de cooperare.
     `;
 }
 
+const CASE_SOLUTIONS = new Map([["1", "1"], ["2", "6"], ["3", "7"]]);
+
+app.post("/api/accusation", (req, res) => {
+    try {
+        const { caseId, suspectId, progress, detective } = req.body || {};
+        if (typeof detective?.id !== "string" || !detective.id || detective.id.length > 100 || typeof detective?.name !== "string" || detective.name.trim().length < 2 || detective.name.trim().length > 40) return res.status(400).json({ error: "Profil de detectiv invalid." });
+        if (typeof caseId !== "string" || typeof suspectId !== "string") return res.status(400).json({ error: "Date invalide." });
+        const db = loadDatabase();
+        const caseData = db.cases.find(item => String(item.id) === caseId);
+        if (!caseData) return res.status(404).json({ error: "Cazul nu există." });
+        const suspect = db.suspects.find(item => String(item.id) === suspectId && String(item.caseId) === caseId);
+        if (!suspect) return res.status(400).json({ error: "Suspectul nu aparține cazului." });
+        const solution = CASE_SOLUTIONS.get(caseId);
+        if (!solution) return res.status(422).json({ error: "Cazul nu are o soluție configurată." });
+        const correct = solution === suspectId;
+        const scoring = calculateScore(db, caseId, suspectId, correct, progress);
+        if (correct) saveBestScore(detective, caseId, scoring.score);
+        return res.json({ caseId, suspectId, suspectName: suspect.name, correct, status: correct ? "solved" : "failed", detective: { id: detective.id, name: detective.name.trim() }, ...scoring });
+    } catch (error) {
+        return res.status(500).json({ error: "Verdictul nu a putut fi calculat." });
+    }
+});
+
+app.patch("/api/leaderboard/profile", (req, res) => {
+    const { id, name } = req.body || {};
+    if (typeof id !== "string" || !id || id.length > 100 || typeof name !== "string" || name.trim().length < 2 || name.trim().length > 40) return res.status(400).json({ error: "Profil invalid." });
+    try { updateDetectiveName(id, name.trim()); return res.json({ ok: true }); }
+    catch { return res.status(500).json({ error: "Numele nu a putut fi actualizat." }); }
+});
+
+app.get("/api/leaderboard", (req, res) => {
+    try { return res.json(getLeaderboard()); }
+    catch { return res.status(500).json({ error: "Clasamentul nu a putut fi încărcat." }); }
+});
+
 app.get("/api/health", (req, res) => {
     res.json({
         status: "online",
         service: "CrimeLab AI Server",
-        version: "secrets-v2",
+        version: "leaderboard-v2",
     });
 });
 
@@ -549,7 +586,7 @@ ${question.trim()}
 
 app.listen(PORT, "127.0.0.1", () => {
     console.log("-----------------------------------");
-    console.log("CrimeLab AI Server pornit! [secrets-v2]");
+    console.log("CrimeLab AI Server pornit! [leaderboard-v2]");
     console.log(`http://localhost:${PORT}`);
     console.log("Personalitățile suspecților sunt configurate.");
     console.log("-----------------------------------");

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { DetectiveGate } from "../components/DetectiveProfile";
 import EvidenceCard from "../components/EvidenceCard";
 import SuspectCard from "../components/SuspectCard";
 import Timeline from "../components/Timeline";
 import "../styles/investigation.css";
+import "../styles/finalAccusation.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
@@ -14,13 +16,15 @@ function readProgress(key) {
 
 function Investigation() {
     const { id } = useParams();
-    return <InvestigationSession key={id} id={id} />;
+    return <DetectiveGate><InvestigationSession key={id} id={id} /></DetectiveGate>;
 }
 
 function InvestigationSession({ id }) {
     const navigate = useNavigate();
     const evidenceKey = `crimelab:evidence:${id}`;
     const prefix = `crimelab:interrogation:${id}:`;
+    const resultKey = `crimelab:verdict:${id}`;
+    const [result, setResult] = useState(() => readProgress(resultKey));
     const [caseData, setCaseData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -47,6 +51,8 @@ function InvestigationSession({ id }) {
         try {
             Object.keys(localStorage).filter(key => key.startsWith(prefix)).forEach(key => localStorage.removeItem(key));
             localStorage.removeItem(evidenceKey);
+            localStorage.removeItem(resultKey);
+            setResult(null);
             setExaminedEvidence([]);
             setInterrogatedSuspects([]);
             setActiveTab("evidence");
@@ -83,6 +89,7 @@ function InvestigationSession({ id }) {
 
     if (loading) return <p className="investigation-message">Se încarcă cazul...</p>;
     if (error) return <p className="investigation-message">{error}</p>;
+    if (result) return <div className="investigation-page"><Link to="/cazuri" className="back-link">← Înapoi la cazuri</Link><h1>{caseData.title}</h1><h2 style={{ color: result.correct ? "#22c55e" : "#ef4444" }}>{result.correct ? "Caz rezolvat" : "Caz eșuat"}</h2><div className="investigation-top-actions"><Link className="accusation-confirm" to={`/accusation/${id}`}>Vezi verdictul</Link><button type="button" className="investigation-restart" onClick={handleRestart}>↻ Reîncepe investigația</button></div></div>;
     const { evidence, suspects, timeline } = caseData;
     return (
         <div className="investigation-page">
@@ -94,6 +101,9 @@ function InvestigationSession({ id }) {
             <div className="investigation-progress">
                 <span>Probe examinate: {evidence.filter(item => examinedEvidence.includes(String(item.id))).length}/{evidence.length}</span>
                 <span>Suspecți interogați: {interrogatedSuspects.length}/{suspects.length}</span>
+            </div>
+            <div className="accusation-entry">
+                <Link className="accusation-confirm" to={`/accusation/${id}`}>Formulează acuzația finală</Link>
             </div>
             <div className="investigation-tabs">
                 <button className={activeTab === "evidence" ? "tab active" : "tab"} onClick={() => setActiveTab("evidence")}>Probe ({evidence.length})</button>

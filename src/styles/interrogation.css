@@ -756,3 +756,53 @@
         padding: 0 16px 16px;
     }
 }
+
+
+.interrogation-suspect-label.confessed {
+    color: #4ade80;
+    border: 1px solid #22c55e55;
+    letter-spacing: 2px;
+    text-shadow: none;
+}
+
+.interrogation-confession {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 18px 32px;
+    background: #102019;
+    border-top: 1px solid #22c55e55;
+    color: #dcfce7;
+}
+
+    .interrogation-confession strong {
+        color: #4ade80;
+        font-size: 16px;
+    }
+
+    .interrogation-confession p {
+        margin: 6px 0 0;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .interrogation-confession a {
+        color: #dcfce7;
+        border: 1px solid #22c55e77;
+        border-radius: 8px;
+        padding: 10px 16px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .interrogation-confession a:hover {
+            background: #166534;
+        }
+
+@media (max-width: 600px) {
+    .interrogation-confession {
+        padding: 16px;
+    }
+}
