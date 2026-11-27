@@ -1,0 +1,164 @@
+.detective-modal {
+    width: min(440px, calc(100% - 32px));
+    max-height: 90vh;
+    overflow: auto;
+    box-sizing: border-box;
+    margin: auto;
+    padding: 32px;
+    color: #f5f5f5;
+    background: linear-gradient(145deg,#21191d,#151719 55%);
+    border: 1px solid #713039;
+    border-top: 3px solid #e63946;
+    border-radius: 16px;
+    box-shadow: 0 24px 80px #0009;
+}
+
+    .detective-modal::backdrop {
+        background: #08090bd9;
+        backdrop-filter: blur(5px);
+    }
+
+    .detective-modal form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+.detective-emblem {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    border: 1px solid #713039;
+    border-radius: 14px;
+    color: #ef4444;
+    background: #32191e;
+}
+
+.detective-eyebrow {
+    color: #f87171;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.detective-modal h2 {
+    font-size: 28px;
+    margin: 0;
+}
+
+.detective-modal p {
+    color: #a1a1aa;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.detective-modal label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.detective-modal input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    border: 1px solid #45454d;
+    border-radius: 8px;
+    background: #0d0f11;
+    color: #fff;
+    font: inherit;
+}
+
+    .detective-modal input:focus {
+        outline: 2px solid #e63946;
+        outline-offset: 2px;
+    }
+
+.detective-save, .detective-cancel {
+    padding: 13px;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+}
+
+.detective-save {
+    background: #b52b38;
+    border: 1px solid #e63946;
+    color: white;
+}
+
+    .detective-save:hover {
+        background: #d13b47;
+    }
+
+.detective-cancel {
+    background: transparent;
+    border: 1px solid #45454d;
+    color: #d4d4d8;
+    text-decoration: none;
+}
+
+.detective-modal .detective-error {
+    color: #f87171;
+    font-size: 13px;
+}
+
+.navbar-detective {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    max-width: 160px;
+    padding: 10px;
+    border: 1px solid #45454d;
+    border-radius: 8px;
+    background: #191b20;
+    color: #f5f5f5;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+    .navbar-detective svg {
+        flex-shrink: 0;
+        color: #e63946;
+    }
+
+    .navbar-detective span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .navbar-detective:hover {
+        border-color: #e63946;
+    }
+
+@media(max-width: 1250px) {
+    .navbar .navbar-action {
+        display: none;
+    }
+}
+
+@media(max-width: 850px) {
+    .navbar-detective {
+        max-width: 115px;
+    }
+}
+
+@media(max-width: 420px) {
+    .navbar-detective span {
+        display: none;
+    }
+
+    .navbar-detective {
+        flex-shrink: 0;
+    }
+
+    .detective-modal {
+        padding: 22px;
+    }
+}

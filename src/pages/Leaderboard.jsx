@@ -1,5 +1,4 @@
-
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     Trophy,
     Medal,
@@ -10,27 +9,38 @@ import {
     UserRound,
 } from "lucide-react";
 import "../styles/leaderboard.css";
+import { useDetective } from "../components/DetectiveProfile";
 
-const detectivi = [
-    { id: 1, nume: "Alexandru Popescu", cazuri: 18, puncte: 2450 },
-    { id: 2, nume: "Maria Ionescu", cazuri: 15, puncte: 2180 },
-    { id: 3, nume: "Andrei Dumitrescu", cazuri: 13, puncte: 1920 },
-    { id: 4, nume: "Elena Marinescu", cazuri: 11, puncte: 1680 },
-    { id: 5, nume: "Vlad Georgescu", cazuri: 9, puncte: 1450 },
-    { id: 6, nume: "Ioana Stan", cazuri: 8, puncte: 1210 },
-    { id: 7, nume: "Mihai Radu", cazuri: 6, puncte: 980 },
-    { id: 8, nume: "Ana Pavel", cazuri: 5, puncte: 750 },
-];
+const AI_URL = import.meta.env.VITE_AI_URL || "http://localhost:3002";
 
 const formatPuncte = (valoare) =>
     new Intl.NumberFormat("ro-RO").format(valoare);
 
 function Leaderboard() {
+    const profile = useDetective();
     const [cautare, setCautare] = useState("");
+    const [detectivi, setDetectivi] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const controller = new AbortController();
+        setError("");
+        fetch(`${AI_URL}/api/leaderboard`, { signal: controller.signal })
+            .then(async response => {
+                if (!response.ok) throw new Error("Clasamentul nu a putut fi încărcat.");
+                const data = await response.json();
+                if (!Array.isArray(data)) throw new Error("Date invalide.");
+                if (!controller.signal.aborted) setDetectivi(data);
+            })
+            .catch(() => { if (!controller.signal.aborted) setError("Clasamentul nu este disponibil. Verifică serverul AI."); })
+            .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+        return () => controller.abort();
+    }, [profile?.id, profile?.name]);
 
     const clasament = useMemo(
         () => [...detectivi].sort((a, b) => b.puncte - a.puncte),
-        []
+        [detectivi]
     );
 
     const rezultate = clasament.filter((detectiv) =>
@@ -39,7 +49,7 @@ function Leaderboard() {
         )
     );
 
-    const podium = [clasament[1], clasament[0], clasament[2]];
+    const podium = [clasament[1], clasament[0], clasament[2]].filter(Boolean);
 
     return (
         <div className="leaderboard-page">
@@ -82,7 +92,7 @@ function Leaderboard() {
                     <div className="leaderboard-stat">
                         <ShieldCheck size={22} />
                         <div>
-                            <strong>{formatPuncte(clasament[0].puncte)}</strong>
+                            <strong>{formatPuncte(clasament[0]?.puncte ?? 0)}</strong>
                             <span>Record de puncte</span>
                         </div>
                     </div>
@@ -94,7 +104,7 @@ function Leaderboard() {
                         Top 3 detectivi
                     </h2>
 
-                    <div className="leaderboard-podium">
+                    <div className="leaderboard-podium" style={podium.length < 3 ? { display: "flex", justifyContent: "center", flexWrap: "wrap", alignItems: "flex-end" } : undefined}>
                         {podium.map((detectiv) => {
                             const pozitie =
                                 clasament.findIndex((d) => d.id === detectiv.id) + 1;
@@ -103,6 +113,7 @@ function Leaderboard() {
                                 <article
                                     key={detectiv.id}
                                     className={`podium-card podium-${pozitie}`}
+                                    style={podium.length < 3 ? { flex: "0 1 calc((100% - 32px) / 3)", minWidth: "min(100%, 260px)", boxSizing: "border-box" } : undefined}
                                 >
                                     <div className="podium-medal">
                                         {pozitie === 1 ? (
@@ -194,16 +205,13 @@ function Leaderboard() {
 
                         {rezultate.length === 0 && (
                             <p className="leaderboard-empty">
-                                Nu am găsit niciun detectiv.
+                                {loading ? "Se încarcă clasamentul..." : error || (detectivi.length ? "Nu am găsit niciun detectiv." : "Rezolvă primul caz pentru a intra în clasament.")}
                             </p>
                         )}
                     </div>
                 </section>
 
-                <p className="leaderboard-demo-note">
-                    Date demonstrative — clasamentul va putea fi conectat
-                    ulterior la backend.
-                </p>
+
             </div>
         </div>
     );

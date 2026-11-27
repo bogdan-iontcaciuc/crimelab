@@ -5,3 +5,5 @@ dist/
 *.user
 *.suo
 .env
+server/leaderboard-data.json
+server/leaderboard-data.tmp

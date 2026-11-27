@@ -75,6 +75,8 @@ function InterrogationSession({ caseId, suspectId }) {
     const [saved] = useState(() => readProgress(storageKey));
     const [presentedEvidenceIds, setPresentedEvidenceIds] = useState(() => Array.isArray(saved.presentedEvidenceIds) ? saved.presentedEvidenceIds.map(String) : []);
     const [disclosureIds, setDisclosureIds] = useState(() => Array.isArray(saved.disclosureIds) ? saved.disclosureIds.map(String) : []);
+    const confessionId = ({ "1": "1c", "6": "6c", "7": "7c" })[String(suspectId)];
+    const hasConfession = Boolean(confessionId && disclosureIds.includes(confessionId));
     const [evidenceItems, setEvidenceItems] = useState([]);
     const [evidenceError, setEvidenceError] = useState("");
     const [selectedEvidence, setSelectedEvidence] = useState("");
@@ -470,13 +472,23 @@ function InterrogationSession({ caseId, suspectId }) {
 
                     <h2>{suspect.name}</h2>
 
-                    <span className="interrogation-suspect-label">
-                        SUSPECT
+                    <span className={`interrogation-suspect-label${hasConfession ? " confessed" : ""}`}>
+                        {hasConfession ? "MĂRTURISIRE OBȚINUTĂ" : "SUSPECT"}
                     </span>
 
                 </div>
 
             </div>
+
+            {hasConfession && (
+                <div className="interrogation-confession" role="status">
+                    <div>
+                        <strong>Mărturisire obținută</strong>
+                        <p>Suspectul și-a recunoscut responsabilitatea. Mărturisirea a fost salvată în progresul investigației.</p>
+                    </div>
+                    <Link to={`/investigation/${caseId}`}>Înapoi la investigație</Link>
+                </div>
+            )}
 
             {(timeLeft <= 0 || attempts <= 0) && (
                 <div className="interrogation-chat-error" role="status">
