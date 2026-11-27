@@ -6,6 +6,7 @@
     padding: 0;
     background: #09090b;
 }
+
 .interrogation-page {
     width: 100%;
     min-height: 100vh;
@@ -254,6 +255,7 @@
         min-height: 460px;
     }
 }
+
 .interrogation-character {
     transform-origin: center bottom;
     animation: suspect-breathing 4s ease-in-out infinite;
@@ -275,7 +277,7 @@
     }
 }
 
-/* NIVEL DE COOPERARE */
+
 
 .interrogation-cooperation {
     position: absolute;
@@ -363,7 +365,7 @@
         letter-spacing: 2px;
     }
 }
-/* INTERFATA HUD */
+
 
 .interrogation-hud {
     position: absolute;
@@ -504,5 +506,253 @@
 
     .interrogation-timer {
         font-size: 28px;
+    }
+}
+
+.interrogation-bubble {
+    max-width: min(440px, 85vw);
+    max-height: 180px;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    font-size: 14px;
+}
+
+.bubble-thinking {
+    animation: thinking-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes thinking-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.ai-spinner {
+    animation: ai-spin 1s linear infinite;
+}
+
+@keyframes ai-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+.interrogation-chat-error {
+    max-width: 1100px;
+    margin: 10px auto;
+    padding: 12px 16px;
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.interrogation-controls button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.interrogation-controls input:disabled {
+    opacity: 0.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bubble-thinking,
+    .ai-spinner {
+        animation: none;
+    }
+}
+
+.interrogation-room {
+    min-height: 660px;
+}
+
+.interrogation-suspect {
+    top: 118px;
+    bottom: 5%;
+    width: min(560px, 48%);
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.interrogation-bubble {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    width: max-content;
+    max-width: 100%;
+    max-height: 130px;
+    overflow-y: auto;
+    padding: 12px 20px;
+    margin-bottom: 8px;
+}
+
+.interrogation-character {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-width: 100%;
+    max-height: min(45vh, 340px);
+}
+
+.interrogation-suspect h2,
+.interrogation-suspect-label {
+    flex-shrink: 0;
+}
+
+.interrogation-transcript {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .interrogation-suspect {
+        width: min(440px, 52%);
+    }
+}
+
+@media (max-width: 600px) {
+    .interrogation-room {
+        min-height: 760px;
+    }
+
+    .interrogation-suspect {
+        top: 100px;
+        bottom: 240px;
+        width: 90%;
+    }
+
+    .interrogation-hud {
+        top: auto;
+        bottom: 12px;
+        width: 46%;
+    }
+
+    .interrogation-bubble {
+        font-size: 13px;
+        max-height: 120px;
+    }
+
+    .interrogation-suspect h2 {
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+
+
+.interrogation-bubble {
+    width: max-content;
+    max-width: min(640px, 85vw);
+    min-height: 0;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    padding: 16px 24px;
+    border-radius: 18px;
+    background: rgba(245, 245, 245, 0.96);
+    color: #18181b;
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: center;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.35);
+}
+
+    .interrogation-bubble::after {
+        content: "";
+        position: absolute;
+        bottom: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 14px solid rgba(245, 245, 245, 0.96);
+    }
+
+.interrogation-restart-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+    .interrogation-restart-actions button, .investigation-restart {
+        padding: 11px 17px;
+        border: 1px solid #b52b38;
+        border-radius: 8px;
+        background: #b52b38;
+        color: white;
+        font: inherit;
+        cursor: pointer;
+    }
+
+        .interrogation-restart-actions button:hover, .investigation-restart:hover {
+            background: #dc3545;
+        }
+
+    .interrogation-restart-actions a {
+        color: #f4f4f5;
+    }
+
+.evidence-inventory {
+    padding: 0 32px 20px;
+    background: #101012;
+}
+
+.evidence-toggle, .evidence-option {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #b52b38;
+    border-radius: 8px;
+    background: #18181b;
+    color: #fafafa;
+    font: inherit;
+    cursor: pointer;
+}
+
+.evidence-panel {
+    display: grid;
+    gap: 10px;
+    max-width: 850px;
+    margin: 12px auto 0;
+}
+
+.evidence-option {
+    display: grid;
+    gap: 6px;
+    text-align: left;
+    border-color: #3f3f46;
+}
+
+    .evidence-option span {
+        color: #a1a1aa;
+        font-size: 13px;
+    }
+
+    .evidence-option.selected {
+        border-color: #ef4444;
+        background: #35191d;
+    }
+
+.evidence-inventory button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .evidence-inventory {
+        padding: 0 16px 16px;
     }
 }
